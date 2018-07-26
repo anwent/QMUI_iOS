@@ -243,6 +243,14 @@ typedef NS_ENUM(NSUInteger, QMUIModalPresentationAnimationStyle) {
  */
 - (void)hideInView:(UIView *)view animated:(BOOL)animated completion:(void (^)(BOOL finished))completion;
 
+
+
+/**
+ * 如果设置为 true 则开启自动布局， view会居中
+ 
+ */
+@property (nonatomic, assign)BOOL hasAutoLayout;
+
 @end
 
 
