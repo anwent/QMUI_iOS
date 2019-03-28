@@ -1,9 +1,16 @@
+/*****
+ * Tencent is pleased to support the open source community by making QMUI_iOS available.
+ * Copyright (C) 2016-2019 THL A29 Limited, a Tencent company. All rights reserved.
+ * Licensed under the MIT License (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+ * http://opensource.org/licenses/MIT
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ *****/
+
 //
 //  UIImage+QMUI.h
 //  qmui
 //
-//  Created by ZhoonChen on 15/7/20.
-//  Copyright (c) 2015年 QMUI Team. All rights reserved.
+//  Created by QMUI Team on 15/7/20.
 //
 
 #import <Foundation/Foundation.h>
@@ -236,6 +243,25 @@ typedef NS_ENUM(NSInteger, QMUIImageResizingMode) {
  *  @return 被mask的图片
  */
 - (UIImage *)qmui_imageWithMaskImage:(UIImage *)maskImage usingMaskImageMode:(BOOL)usingMaskImageMode;
+
+/**
+ 将 data 转换成 animated UIImage（如果非 animated 则转换成普通 UIImage），image 倍数为 1（与系统的 [UIImage animatedImageWithData:] 接口一致）
+
+ @param data 图片文件的 data
+ @return 转换成的 UIImage
+ */
++ (UIImage *)qmui_animatedImageWithData:(NSData *)data;
+
+/**
+ 将 data 转换成 animated UIImage（如果非 animated 则转换成普通 UIImage）
+
+ @param data 图片文件的 data
+ @param scale 图片的倍数，0 表示获取当前设备的屏幕倍数
+ @return 转换成的 UIImage
+ @see http://www.jianshu.com/p/767af9c690a3
+ @see https://github.com/rs/SDWebImage
+ */
++ (UIImage *)qmui_animatedImageWithData:(NSData *)data scale:(CGFloat)scale;
 
 /**
  *  创建一个size为(4, 4)的纯色的UIImage

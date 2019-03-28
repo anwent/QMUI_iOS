@@ -1,9 +1,16 @@
-;//
+/*****
+ * Tencent is pleased to support the open source community by making QMUI_iOS available.
+ * Copyright (C) 2016-2019 THL A29 Limited, a Tencent company. All rights reserved.
+ * Licensed under the MIT License (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+ * http://opensource.org/licenses/MIT
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ *****/
+
+//
 //  QMUIDialogViewController.m
 //  WeRead
 //
-//  Created by MoLice on 16/7/8.
-//  Copyright © 2016年 QMUI Team. All rights reserved.
+//  Created by QMUI Team on 16/7/8.
 //
 
 #import "QMUIDialogViewController.h"
@@ -28,7 +35,7 @@
 }
 
 static QMUIDialogViewController *dialogViewControllerAppearance;
-+ (instancetype)appearance {
++ (nonnull instancetype)appearance {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         if (!dialogViewControllerAppearance) {
@@ -75,7 +82,7 @@ static QMUIDialogViewController *dialogViewControllerAppearance;
     [super didInitialize];
     if (dialogViewControllerAppearance) {
         self.cornerRadius = [QMUIDialogViewController appearance].cornerRadius;
-        self.dialogViewMargins = UIEdgeInsetsConcat([QMUIDialogViewController appearance].dialogViewMargins, IPhoneXSafeAreaInsets);
+        self.dialogViewMargins = UIEdgeInsetsConcat([QMUIDialogViewController appearance].dialogViewMargins, SafeAreaInsetsConstantForDeviceWithNotch);
         self.maximumContentViewWidth = [QMUIDialogViewController appearance].maximumContentViewWidth;
         self.backgroundColor = [QMUIDialogViewController appearance].backgroundColor;
         self.titleTintColor = [QMUIDialogViewController appearance].titleTintColor;
@@ -128,10 +135,6 @@ static QMUIDialogViewController *dialogViewControllerAppearance;
     
     self.modalPresentationViewController = [[QMUIModalPresentationViewController alloc] init];
     self.modalPresentationViewController.modal = YES;
-}
-
-- (void)dealloc {
-    NSLog(@"");
 }
 
 - (void)setCornerRadius:(CGFloat)cornerRadius {
@@ -443,7 +446,7 @@ EndIgnoreClangWarning
 }
 
 static QMUIDialogSelectionViewController *dialogSelectionViewControllerAppearance;
-+ (instancetype)appearance {
++ (nonnull instancetype)appearance {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         if (!dialogSelectionViewControllerAppearance) {
@@ -516,13 +519,13 @@ const NSInteger QMUIDialogSelectionViewControllerSelectedItemIndexNone = -1;
 }
 
 - (void)setSelectedItemIndex:(NSInteger)selectedItemIndex {
-    _selectedItemIndex = selectedItemIndex;
     [self.selectedItemIndexes removeAllObjects];
+    _selectedItemIndex = selectedItemIndex;
 }
 
 - (void)setSelectedItemIndexes:(NSMutableSet<NSNumber *> *)selectedItemIndexes {
-    _selectedItemIndexes = selectedItemIndexes;
     self.selectedItemIndex = QMUIDialogSelectionViewControllerSelectedItemIndexNone;
+    _selectedItemIndexes = selectedItemIndexes;
 }
 
 - (void)setAllowsMultipleSelection:(BOOL)allowsMultipleSelection {
@@ -651,7 +654,7 @@ const NSInteger QMUIDialogSelectionViewControllerSelectedItemIndexNone = -1;
 }
 
 static QMUIDialogTextFieldViewController *dialogTextFieldViewControllerAppearance;
-+ (instancetype)appearance {
++ (nonnull instancetype)appearance {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         if (!dialogTextFieldViewControllerAppearance) {
@@ -737,8 +740,8 @@ static QMUIDialogTextFieldViewController *dialogTextFieldViewControllerAppearanc
 
 - (QMUILabel *)generateTextFieldTitleLabel {
     QMUILabel *textFieldLabel = [[QMUILabel alloc] init];
-    textFieldLabel.font = UIFontBoldMake(12);
-    textFieldLabel.textColor = UIColorGrayDarken;
+    textFieldLabel.font = self.textFieldLabelFont;
+    textFieldLabel.textColor = self.textFieldLabelTextColor;
     [self.contentView addSubview:textFieldLabel];
     return textFieldLabel;
 }
@@ -747,6 +750,7 @@ static QMUIDialogTextFieldViewController *dialogTextFieldViewControllerAppearanc
     QMUITextField *textField = [[QMUITextField alloc] init];
     textField.delegate = self;
     textField.font = self.textFieldFont;
+    textField.textColor = self.textFieldTextColor;
     textField.backgroundColor = nil;
     textField.returnKeyType = UIReturnKeyNext;
     textField.clearButtonMode = UITextFieldViewModeWhileEditing;
@@ -758,6 +762,7 @@ static QMUIDialogTextFieldViewController *dialogTextFieldViewControllerAppearanc
 
 - (CALayer *)generateTextFieldSeparatorLayer {
     CALayer *textFieldSeparatorLayer = [CALayer qmui_separatorLayer];
+    textFieldSeparatorLayer.backgroundColor = self.textFieldSeparatorColor.CGColor;
     [self.contentView.layer addSublayer:textFieldSeparatorLayer];
     return textFieldSeparatorLayer;
 }
@@ -888,7 +893,7 @@ static QMUIDialogTextFieldViewController *dialogTextFieldViewControllerAppearanc
 }
 
 - (NSArray<QMUILabel *> *)textFieldTitleLabels {
-    return self.mutableTextFields.copy;
+    return self.mutableTitleLabels.copy;
 }
 
 - (NSArray<QMUITextField *> *)textFields {

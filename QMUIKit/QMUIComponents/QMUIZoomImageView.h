@@ -1,9 +1,16 @@
+/*****
+ * Tencent is pleased to support the open source community by making QMUI_iOS available.
+ * Copyright (C) 2016-2019 THL A29 Limited, a Tencent company. All rights reserved.
+ * Licensed under the MIT License (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+ * http://opensource.org/licenses/MIT
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ *****/
+
 //
 //  QMUIZoomImageView.h
 //  qmui
 //
-//  Created by ZhoonChen on 14-9-14.
-//  Copyright (c) 2014年 QMUI Team. All rights reserved.
+//  Created by QMUI Team on 14-9-14.
 //
 
 #import <UIKit/UIKit.h>
@@ -51,6 +58,8 @@
 @interface QMUIZoomImageView : UIView <UIScrollViewDelegate>
 
 @property(nonatomic, weak) id<QMUIZoomImageViewDelegate> delegate;
+
+@property(nonatomic, strong, readonly) UIScrollView *scrollView;
 
 /**
  * 比如常见的上传头像预览界面中间有一个用于裁剪的方框，则 viewportRect 必须被设置为这个方框在 zoomImageView 坐标系内的 frame，否则拖拽图片或视频时无法正确限制它们的显示范围
@@ -137,6 +146,11 @@
  *  @info 注意 cell 复用可能导致当前页面显示一张错误的旧图片/视频，所以一般情况下需要视情况同时将 image/livePhoto/videoPlayerItem 等属性置为 nil 以清除图片/视频的显示
  */
 - (void)showEmptyViewWithText:(NSString *)text;
+- (void)showEmptyViewWithText:(NSString *)text
+                   detailText:(NSString *)detailText
+                  buttonTitle:(NSString *)buttonTitle
+                 buttonTarget:(id)buttonTarget
+                 buttonAction:(SEL)action;
 
 /**
  *  将 emptyView 隐藏
